@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style>
+    *{
+        padding: 0; margin: 0;
+    }
+    img{
+        display: block;
+        margin-bottom: 10px;
+    }
+    #box{
+        width: 600px; height: 150px;
+        margin:0 auto 10px;
+        border: 1px solid #ccc;
+        overflow: auto;
+    }
+</style>
+</head>
+<body id="ng-app" ng-controller="lazyCtrl">
+    
+    <img width="600" height="400" src="grey.gif" lazy-load="http://ftp140582.host156.mymyweb.net/slider/images/640/1.jpg">
+    <img width="600" height="400" src="grey.gif" lazy-load="http://ftp140582.host156.mymyweb.net/slider/images/640/2.jpg">
+    <img width="600" height="400" src="grey.gif" lazy-load="http://ftp140582.host156.mymyweb.net/slider/images/640/3.jpg">
+    <div id="box">
+          <img width="600" height="400" src="grey.gif" lazy-load="http://ftp140582.host156.mymyweb.net/slider/images/640/1.jpg">
+         <img width="600" height="400" src="grey.gif" lazy-load="http://ftp140582.host156.mymyweb.net/slider/images/640/4.jpg">
+    </div>
+    <!--[if lte IE 7]>
+        <script src="json2.js"></script>
+    <![endif]-->
+    <script src="tools.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="angular-lazy-load.js"></script>
+    <script>
+        angular.module('app', ['imgLazyLoad']).
+
+        config(function($sceProvider) {
+          // Completely disable SCE to support IE7.
+          $sceProvider.enabled(false);
+        }).
+
+        controller('lazyCtrl', ['$scope', function($scope){
+            //图片加载完毕做的一些事情 返回新的newImage js 对象和$image jq对象 
+            $scope.imgOnload = function(newImage, $image){
+                $image.attr({
+                    width: newImage.width,
+                    height: newImage.height
+                });
+            }
+            //winddow on load 是否加载没有加载完的图片
+            $scope.LoadingTheRest = false;
+        }]);
+
+       angular.bootstrap(document.body, ['app']);
+    </script>
+</body>
+</html>
