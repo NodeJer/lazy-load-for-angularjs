@@ -76,7 +76,7 @@ factory('tools', function(){
 	return tools;
 }).
 
-directive('lazyLoad', function(tools){
+directive('lazyLoad', function(tools, $rootScope){
 	return {
 		link: function($scope, elements, attrs, configCtrl) {
 			var parentScollWindow = tools.findRollingParent(elements[0]);
@@ -94,7 +94,7 @@ directive('lazyLoad', function(tools){
 				scroll(false);
 			});
 
-			if($scope.LoadingTheRest){
+			if($rootScope.LoadingTheRest){
 				$window.on('load', function(){
 					scroll(true);
 				});
@@ -110,9 +110,10 @@ directive('lazyLoad', function(tools){
 					var image = new Image();
 
 					image.onload = function(){
-						if(typeof $scope.imgOnload === 'function'){
-							$scope.imgOnload(this, elements);
-						}
+						$rootScope.$emit('imgOnload', {
+							newImage: this,
+							$image: elements
+						});
 						elements.attr('src', this.src);
 					}
 
@@ -126,4 +127,3 @@ directive('lazyLoad', function(tools){
 		}
 	};
 });
-// angular.bootstrap(document.body, ['imgLazyLoad']);

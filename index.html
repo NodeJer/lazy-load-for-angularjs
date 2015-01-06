@@ -46,17 +46,19 @@
           $sceProvider.enabled(false);
         }).
 
-        controller('lazyCtrl', ['$scope', function($scope){
+        controller('lazyCtrl', function($rootScope){
             //图片加载完毕做的一些事情 返回新的newImage js 对象和$image jq对象 
-            $scope.imgOnload = function(newImage, $image){
-                $image.attr({
-                    width: newImage.width,
-                    height: newImage.height
+
+            $rootScope.$on('imgOnload', function(event, msg){
+                msg.$image.attr({
+                    width: msg.newImage.width,
+                    height: msg.newImage.height
                 });
-            }
+            });
+
             //winddow on load 是否加载没有加载完的图片
-            $scope.LoadingTheRest = false;
-        }]);
+            $rootScope.LoadingTheRest = false;
+        });
 
        angular.bootstrap(document.body, ['app']);
     </script>
