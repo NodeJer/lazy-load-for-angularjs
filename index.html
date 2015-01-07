@@ -49,7 +49,7 @@
         controller('lazyCtrl', function($rootScope){
             //图片加载完毕做的一些事情 返回新的newImage js 对象和$image jq对象 
 
-            $rootScope.$on('imgOnload', function(event, msg){
+            $rootScope.$on('lazyLoadDone', function(event, msg){
                 msg.$image.attr({
                     width: msg.newImage.width,
                     height: msg.newImage.height
@@ -57,7 +57,7 @@
             });
 
             //winddow on load 是否加载没有加载完的图片
-            $rootScope.LoadingTheRest = false;
+            //$rootScope.LoadingTheRest = false;
         });
 
        angular.bootstrap(document.body, ['app']);

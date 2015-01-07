@@ -94,11 +94,11 @@ directive('lazyLoad', function(tools, $rootScope){
 				scroll(false);
 			});
 
-			if($rootScope.LoadingTheRest){
+			/*if($rootScope.LoadingTheRest){
 				$window.on('load', function(){
 					scroll(true);
 				});
-			}
+			}*/
 
 			function scroll(suppose){
 				if(elements.data('loaded')){
@@ -110,7 +110,7 @@ directive('lazyLoad', function(tools, $rootScope){
 					var image = new Image();
 
 					image.onload = function(){
-						$rootScope.$emit('imgOnload', {
+						$rootScope.$emit('lazyLoadDone', {
 							newImage: this,
 							$image: elements
 						});
