@@ -1,6 +1,6 @@
-angular.module('imgLazyLoad', []).
+angular.module('image.lazyload', []).
 
-factory('tools', function(){
+factory('$tools', function(){
 	var tools = {
 		findRollingParent: function(obj){
 			var parent = obj.parentNode;
@@ -76,54 +76,49 @@ factory('tools', function(){
 	return tools;
 }).
 
-directive('lazyLoad', function(tools, $rootScope){
+directive('lazyLoad',['$tools', function($tools){
 	return {
-		link: function($scope, elements, attrs, configCtrl) {
-			var parentScollWindow = tools.findRollingParent(elements[0]);
-			    parentScollWindow = parentScollWindow.tagName === 'BODY'? window : parentScollWindow;
+		link: function($scope, $element, attrs, configCtrl) {
+			var parentScollWindow = window, src, newImage;
 
-			var src = attrs.lazyLoad;
+			//找到父节点（overflow：auto）
+			parentScollWindow = $tools.findRollingParent($element[0]);
+			parentScollWindow = parentScollWindow.tagName === 'BODY'? window : parentScollWindow;
 
-			var $window = angular.element(window);
+			src = attrs.lazyLoad;
 			
 			angular.element(parentScollWindow).on('scroll', function(){
-				scroll(false);
+				scroll();
 			});
 
-			$window.on('resize', function(){
-				scroll(false);
+			angular.element(parentScollWindow).on('resize', function(){
+				scroll();
 			});
 
-			/*if($rootScope.LoadingTheRest){
-				$window.on('load', function(){
-					scroll(true);
-				});
-			}*/
+			scroll();
 
 			function scroll(suppose){
-				if(elements.data('loaded')){
-					return false;
-				}
-				var visible = suppose||tools.isVisible(elements[0], parentScollWindow);
+				if( $element.data('loaded') )return;
+
+				var visible = $tools.isVisible($element[0], parentScollWindow);
 
 				if(visible){
-					var image = new Image();
+					var newImage = new Image();
 
-					image.onload = function(){
-						$rootScope.$emit('lazyLoadDone', {
+					newImage.onload = function(){
+						$scope.$emit('lazyLoadDone', {
 							newImage: this,
-							$image: elements
+							oldImage: $element[0]
 						});
-						elements.attr('src', this.src);
+
+						$element.attr('src', this.src);
 					}
 
-					image.src = src;
+					newImage.src = src;
 
-					elements.data('loaded', true);
+					$element.data('loaded', true);
 				}
 			}
-			
-			scroll(false);
 		}
 	};
-});
+}]);

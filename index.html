@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:ng="http://angularjs.org">
+
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-<title>Examples</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="" rel="stylesheet">
-<style>
-    *{
-        padding: 0; margin: 0;
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <title>Examples</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="" rel="stylesheet">
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
     }
-    img{
+    
+    img {
         display: block;
         margin-bottom: 10px;
     }
-    #box{
-        width: 600px; height: 150px;
-        margin:0 auto 10px;
+    
+    #box {
+        width: 600px;
+        height: 150px;
+        margin: 0 auto 10px;
         border: 1px solid #ccc;
         overflow: auto;
     }
-</style>
+    </style>
 </head>
-<body id="ng-app" ng-controller="lazyCtrl">
-    
+
+<body id="ng-app" ng-controller="LazyCtrl">
     <img width="600" height="400" src="grey.gif" lazy-load="http://bbs.miaov.com/data/attachment/forum/201412/25/163520re33s3wxi7lcx3r7.jpg">
     <img width="600" height="400" src="grey.gif" lazy-load="http://bbs.miaov.com/data/attachment/forum/201412/25/163520re33s3wxi7lcx3r7.jpg">
     <img width="600" height="400" src="grey.gif" lazy-load="http://bbs.miaov.com/data/attachment/forum/201412/25/163520re33s3wxi7lcx3r7.jpg">
     <div id="box">
-          <img width="600" height="400" src="grey.gif" lazy-load="http://bbs.miaov.com/data/attachment/forum/201412/25/164947rtteceei14e8rr4e.jpg">
-         <img width="600" height="400" src="grey.gif" lazy-load="http://bbs.miaov.com/data/attachment/forum/201412/25/170448dx113xava3qo1sqf.jpg">
+        <img width="600" height="400" src="grey.gif" lazy-load="http://bbs.miaov.com/data/attachment/forum/201412/25/164947rtteceei14e8rr4e.jpg">
+        <img width="600" height="400" src="grey.gif" lazy-load="http://bbs.miaov.com/data/attachment/forum/201412/25/170448dx113xava3qo1sqf.jpg">
     </div>
     <!--[if lte IE 7]>
         <script src="json2.js"></script>
     <![endif]-->
     <script src="angular.min.js"></script>
-    <script src="angular-lazy-load.js"></script>
+    <script src="angular-image-lazy-load.js"></script>
     <script>
-        angular.module('app', ['imgLazyLoad']).
+    angular.module('app', ['image.lazyload']).
 
-        config(function($sceProvider) {
-          // Completely disable SCE to support IE7.
-          $sceProvider.enabled(false);
-        }).
+    config(function($sceProvider) {
+        // Completely disable SCE to support IE7.
+        $sceProvider.enabled(false);
+    }).
 
-        controller('lazyCtrl', function($rootScope){
-            //图片加载完毕做的一些事情 返回新的newImage js 对象和$image jq对象 
-
-            $rootScope.$on('lazyLoadDone', function(event, msg){
-                msg.$image.attr({
-                    width: msg.newImage.width,
-                    height: msg.newImage.height
-                });
-            });
-
-            //winddow on load 是否加载没有加载完的图片
-            //$rootScope.LoadingTheRest = false;
+    controller('LazyCtrl', function($rootScope) {
+        //图片加载完毕做的一些事情
+        $rootScope.$on('lazyLoadDone', function(ev, res) {
+            res.oldImage.width = res.newImage.width;
+            res.oldImage.height = res.newImage.height;
         });
+    });
 
-       angular.bootstrap(document.body, ['app']);
+    angular.bootstrap(document.body, ['app']);
     </script>
 </body>
+
 </html>
