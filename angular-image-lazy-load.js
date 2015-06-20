@@ -1,4 +1,4 @@
-angular.module('image.lazyload', []).
+angular.module('ng.image.lazyload', []).
 
 factory('$tools', function(){
 	var tools = {
